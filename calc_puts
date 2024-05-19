@@ -1,0 +1,37 @@
+import yfinance as yf
+from datetime import datetime, timedelta
+
+def calculate_put_options(ticker, num_shares, protection_level=0.05, months_out=6):
+    # Fetch current stock price
+    stock = yf.Ticker(ticker)
+    stock_info = stock.history(period="1d")
+    current_price = stock_info['Close'].iloc[-1]
+    
+    # Calculate strike price
+    strike_price = current_price * (1 - protection_level)
+    
+    # Calculate expiry date
+    expiry_date = (datetime.now() + timedelta(days=months_out * 30)).strftime('%Y-%m-%d')
+    
+    # Calculate number of put options
+    num_put_options = num_shares / 100  # Assuming 100 shares per contract
+    
+    return current_price, strike_price, expiry_date, num_put_options
+
+def main():
+    # User input
+    ticker = input("Enter the stock ticker: ")
+    num_shares = int(input("Enter the number of shares: "))
+    
+    # Calculate protective put strategy details
+    current_price, strike_price, expiry_date, num_put_options = calculate_put_options(ticker, num_shares)
+    
+    # Output the results
+    print(f"\nProtective Put Strategy for {ticker.upper()}:")
+    print(f"Current Stock Price: ${current_price:.2f}")
+    print(f"Strike Price: ${strike_price:.2f}")
+    print(f"Expiry Date: {expiry_date}")
+    print(f"Number of Put Options: {num_put_options:.2f}")
+
+if __name__ == "__main__":
+    main()

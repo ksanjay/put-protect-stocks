@@ -1,0 +1,32 @@
+import yfinance as yf
+from datetime import datetime, timedelta
+
+def calculate_put_options(ticker, num_shares, protection_pct):
+    # Get the current stock price
+    stock = yf.Ticker(ticker)
+    current_price = stock.info["regularMarketOpen"]
+
+    # Calculate the strike price
+    strike_price = current_price * (1 - protection_pct)
+
+    # Calculate the number of put option contracts
+    num_contracts = num_shares // 100
+
+    # Set the expiration date to 30 days from now
+    expiration_date = datetime.now().date() + timedelta(days=30)
+
+    print(f"Stock: {ticker}")
+    print(f"Current Price: ${current_price:.2f}")
+    print(f"Number of Shares: {num_shares}")
+    print(f"Protection Percentage: {protection_pct * 100}%")
+    print(f"Strike Price: ${strike_price:.2f}")
+    print(f"Expiration Date: {expiration_date}")
+    print(f"Number of Put Option Contracts: {num_contracts}")
+
+# Get user input
+stock_ticker = input("Enter the stock ticker to protect: ")
+num_stocks = int(input("Enter the number of stocks: "))
+protection_percentage = float(input("Enter the desired protection percentage (e.g., 0.2 for 20%): "))
+
+# Call the function to calculate put options
+calculate_put_options(stock_ticker.upper(), num_stocks, protection_percentage)
